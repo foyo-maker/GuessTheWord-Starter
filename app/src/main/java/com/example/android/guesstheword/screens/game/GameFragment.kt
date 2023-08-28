@@ -53,23 +53,39 @@ class GameFragment : Fragment() {
             false
         )
 
+
+
         Log.i("GameFragment", "Called ViewModelProvider.get")
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
-            binding.scoreText.text = newScore.toString()
+//        viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
+//            binding.scoreText.text = newScore.toString()
+//
+//        })
 
-        })
-        viewModel.word.observe(viewLifecycleOwner,Observer{newWord ->
-            binding.wordText.text= newWord
-        })
+        binding.gameViewModel = viewModel
+
+
+
+        // Specify the fragment view as the lifecycle owner of the binding.
+        // This is used so that the binding can observe LiveData updates
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        /** Setting up LiveData observation relationship **/
+//        viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
+//            binding.wordText.text = newWord
+//        })
+
+//        viewModel.word.observe(viewLifecycleOwner,Observer{newWord ->
+//            binding.wordText.text= newWord
+//        })
 
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer<Boolean> { hasFinished ->
             if (hasFinished) gameFinished()
         })
-        binding.correctButton.setOnClickListener { onCorrect() }
-        binding.skipButton.setOnClickListener { onSkip() }
-
-        binding.endGameButton.setOnClickListener { onEndGame() }
+//        binding.correctButton.setOnClickListener { onCorrect() }
+//        binding.skipButton.setOnClickListener { onSkip() }
+//
+//        binding.endGameButton.setOnClickListener { onEndGame() }
 //        updateScoreText()
 //        updateWordText()
         return binding.root
@@ -81,23 +97,23 @@ class GameFragment : Fragment() {
 
     /** Methods for button click handlers **/
 
-    private fun onSkip() {
-       viewModel.onSkip()
-//        updateWordText()
-//        updateScoreText()
-    }
-
-    private fun onCorrect() {
-        viewModel.onCorrect()
-//        updateWordText()
-//        updateScoreText()
-    }
-
-    //called when end game is tap
-
-    private fun onEndGame() {
-        gameFinished()
-    }
+//    private fun onSkip() {
+//       viewModel.onSkip()
+////        updateWordText()
+////        updateScoreText()
+//    }
+//
+//    private fun onCorrect() {
+//        viewModel.onCorrect()
+////        updateWordText()
+////        updateScoreText()
+//    }
+//
+//    //called when end game is tap
+//
+//    private fun onEndGame() {
+//        gameFinished()
+//    }
     private fun gameFinished() {
         Toast.makeText(activity, "Game has just finished", Toast.LENGTH_SHORT).show()
         val action = GameFragmentDirections.actionGameToScore()
